@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Founders - Goodfluencers</title>
+    
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            /* Custom color palette */
+            --color-light: #f8f9fa;
+            --color-light-accent: #e9ecef;
+            --color-light-hover: #dee2e6;
+            --color-mid-light: #ced4da;
+            --color-mid: #adb5bd;
+            --color-mid-dark: #6c757d;
+            --color-dark-accent: #495057;
+            --color-dark-hover: #343a40;
+            --color-dark: #212529;
+            
+            /* Override Bootstrap colors */
+            --bs-primary: #495057;
+            --bs-primary-rgb: 73, 80, 87;
+            --bs-primary-hover: #343a40;
+            --bs-secondary: #adb5bd;
+            --bs-secondary-rgb: 173, 181, 189;
+            --bs-light: #f8f9fa;
+            --bs-light-rgb: 248, 249, 250;
+            --bs-dark: #212529;
+            --bs-dark-rgb: 33, 37, 41;
+            --bs-primary-bg-subtle: #dee2e6;
+            --bs-body-bg: #f8f9fa;
+            --bs-body-color: #212529;
+        }
+        
+        [data-bs-theme="dark"] {
+            --bs-body-bg: #212529;
+            --bs-body-color: #f8f9fa;
+            --bs-primary-bg-subtle: #343a40;
+        }
+        
+        /* Target only buttons with the primary class to make them purple */
+        .btn-primary {
+            background-color: #B39EB5 !important;
+            border-color: #B39EB5 !important;
+        }
+        
+        .btn-primary:hover, 
+        .btn-primary:focus, 
+        .btn-primary:active {
+            background-color: #9e89a4 !important; /* Darker shade for hover */
+            border-color: #9e89a4 !important;
+        }
+        
+        /* Selection Color - Translucent and more aesthetic */
+        ::selection {
+            background-color: rgba(179, 158, 181, 0.4); /* #B39EB5 with 40% opacity */
+            color: inherit; /* Keep the original text color */
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Animation Delays */
+        .delay-1 {
+            transition-delay: 0.1s;
+        }
+        
+        .delay-2 {
+            transition-delay: 0.2s;
+        }
+        
+        .delay-3 {
+            transition-delay: 0.3s;
+        }
+        
+        .delay-4 {
+            transition-delay: 0.4s;
+        }
+        
+        .delay-5 {
+            transition-delay: 0.5s;
+        }
+
+        /* Hover Effects */
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+        
+        .hover-elevate {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-elevate:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Navigation */
+        .navbar {
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .navbar.scrolled {
+            padding: 0.5rem 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            background-color: var(--color-light) !important;
+        }
+        
+        [data-bs-theme="dark"] .navbar.scrolled {
+            background-color: var(--color-dark) !important;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-dark-accent);
+        }
+
+        .nav-link {
+            position: relative;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+            color: var(--color-mid-dark);
+        }
+        
+        .nav-link:hover {
+            color: var(--color-dark-accent);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--color-dark-accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            color: var(--color-dark-accent);
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Page Header */
+        .page-header {
+            padding: 8rem 0 4rem;
+            background: linear-gradient(rgba(33, 37, 41, 0.7), rgba(33, 37, 41, 0.7)), url('founders-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--color-light);
+            text-align: center;
+        }
+        
+        /* Founder Profile */
+        .founder-profile {
+            padding: 3rem 0;
+        }
+        
+        .founder-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .founder-image::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 60%;
+            height: 60%;
+            border: 3px solid var(--color-dark-accent);
+            z-index: -1;
+        }
+        
+        .founder-image::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            right: -15px;
+            width: 60%;
+            height: 60%;
+            background-color: var(--color-light-hover);
+            z-index: -1;
+        }
+        
+        [data-bs-theme="dark"] .founder-image::after {
+            background-color: var(--color-dark-hover);
+        }
+        
+        .founder-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--color-dark-accent);
+            color: var(--color-light);
+            margin-right: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--color-dark-hover);
+            transform: translateY(-3px);
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 3rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background-color: var(--color-dark-accent);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-content {
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            background-color: var(--bs-body-bg);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            background-color: var(--color-dark-accent);
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        
+        .timeline-left {
+            padding-right: 3rem;
+        }
+        
+        .timeline-right {
+            padding-left: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-dot {
+                left: 30px;
+            }
+            
+            .timeline-left, .timeline-right {
+                padding-left: 70px;
+                padding-right: 15px;
+            }
+        }
+
+        /* Quote Section */
+        .quote-section {
+            background-color: var(--color-dark-accent);
+            color: var(--color-light);
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quote-section::before, .quote-section::after {
+            content: '\f10d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            font-size: 10rem;
+            opacity: 0.1;
+            color: var(--color-light);
+        }
+        
+        .quote-section::before {
+            top: -30px;
+            left: 30px;
+        }
+        
+        .quote-section::after {
+            content: '\f10e';
+            bottom: -30px;
+            right: 30px;
+        }
+        
+        .quote-text {
+            font-size: 2rem;
+            font-style: italic;
+            position: relative;
+            padding: 0 4rem;
+        }
+
+        /* Custom theme toggle */
+        @keyframes checkboxAnim {
+          0% {
+            transform: rotate(0deg);
+            margin-right: 1rem;
+          }
+          
+          100% {
+            transform: rotate(180deg);
+            margin-right: -1rem;
+          }
+        }
+
+        @keyframes checkboxAnimBack {
+          0% {
+            transform: rotate(180deg);
+            margin-right: -1rem;
+          }
+          
+          100% {
+            transform: rotate(0deg);
+            margin-right: 1rem;
+          }
+        }
+
+        .mainBody {
+          transition: .4s;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .toggleContainer {
+          width: fit-content;
+          height: fit-content;
+          transform: scale(0.65);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        #checkbox {
+          height: 2.5rem;
+          width: 2.5rem;
+          border-radius: 100px;
+          -webkit-appearance: none;
+          appearance: none;
+          background: #000322;
+          outline: none;
+          border-radius: 30px;
+          cursor: pointer;
+          transition: .3s;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+        }
+
+        #checkbox:hover {
+          box-shadow: 0px 4px 26px 6px rgba(0, 0, 0, 0.25);
+          margin-bottom: .5rem;
+        }
+
+        #checkbox::before {
+          content: "";
+          position: relative;
+          width: 2rem;
+          height: 2rem;
+          background: #f6f6f6;
+          border-radius: 100px;
+          transition: .3s;
+        }
+
+        #checkbox::after {
+          content: "";
+          position: absolute;
+          background: #000322;
+          width: 0.8rem;
+          height: 1.6rem;
+          margin-right: 1rem;
+          transform: rotate(0deg);
+          border-top-left-radius: 6.25rem;
+          border-bottom-left-radius: 6.25rem;
+          border-right: 0;
+          transition: .4s border-radius;
+          animation: checkboxAnimBack .4s;
+        }
+
+        #checkbox:checked::before {
+          background: #000322;
+        }
+
+        #checkbox:checked::after {
+          animation: checkboxAnim .4s;
+          content: "";
+          position: absolute;
+          transform: rotate(-180deg);
+          width: 0.8rem;
+          height: 1.6rem;
+          margin-right: -1rem;
+        }
+
+        #checkbox:checked, #checkbox:checked::after {
+          background: #f6f6f6;
+        }
+
+        .darkBg {
+         background: #000322; 
+        }
+
+        /* Adjustments for better fit in navbar */
+        .navbar .mainBody {
+          height: auto;
+          width: auto;
+        }
+
+        /* Custom Scroll Behavior */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        /* Section Spacing */
+        section {
+            padding: 5rem 0;
+        }
+        
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bs-body-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--color-light-hover);
+            border-top: 5px solid var(--color-dark-accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .cursor-follower {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(var(--bs-primary-rgb), 0.5);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background-color: var(--color-dark-accent);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+        
+        /* Scroll To Top Button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-dark-accent);
+            color: var(--color-light);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            cursor: pointer;
+        }
+        
+        .scroll-to-top:hover {
+            background-color: var(--color-dark-hover);
+        }
+        
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Page Transition */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-dark-accent);
+            z-index: 9999;
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .page-transition.active {
+            transform: translateY(0);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--color-light-accent);
+        }
+        
+        [data-bs-theme="dark"] footer {
+            background-color: var(--color-dark-hover);
+        }
+        
+        footer a {
+            color: var(--color-dark-accent);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        footer a:hover {
+            color: var(--color-dark);
+        }
+        
+        [data-bs-theme="dark"] footer a {
+            color: var(--color-mid);
+        }
+        
+        [data-bs-theme="dark"] footer a:hover {
+            color: var(--color-light);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background-color: var(--color-dark-accent);
+            color: var(--color-light);
+            text-align: center;
+            padding: 8rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
+    
+    <!-- Cursor Follower -->
+    <div class="cursor-follower"></div>
+    
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+    
+    <!-- Page Transition -->
+    <div class="page-transition"></div>
+    
+    <!-- Scroll To Top Button -->
+    <div class="scroll-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary bg-opacity-75">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-graduation-cap me-2 text-primary"></i>
+                Goodfluencers
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="founders.html">Founders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="events.html">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="courses.html">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="mainBody">
+              <div class="toggleContainer">
+                <input id="checkbox" type="checkbox" value="off">
+              </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Container -->
+    <main class="content-wrapper">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 data-aos="fade-up">Meet Our Founders</h1>
+                <p class="lead" data-aos="fade-up" data-aos-delay="200">Visionaries who are transforming education through innovation and excellence</p>
+            </div>
+        </section>
+        
+        <!-- Founder 1 -->
+        <section class="founder-profile">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-5 mb-4 mb-lg-0">
+                        <div class="founder-image" data-aos="fade-right">
+                            <img src="founder1.jpg" alt="Dr. Emily Carter" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <h2 class="mb-3" data-aos="fade-left">Dr. Emily Carter</h2>
+                        <p class="text-muted" data-aos="fade-left" data-aos-delay="100">Co-Founder & Chief Academic Officer</p>
+                        
+                        <p data-aos="fade-left" data-aos-delay="200">Dr. Emily Carter is an award-winning educator with over 15 years of experience in academic leadership and pedagogical innovation. With a Ph.D. in Educational Psychology from Stanford University and a background in curriculum development, she brings a wealth of knowledge to Goodfluencers.</p>
+                        
+                        <p data-aos="fade-left" data-aos-delay="300">Prior to founding Goodfluencers, Dr. Carter served as the Director of Innovative Learning at the National Education Research Institute, where she led initiatives focusing on personalized learning approaches and technology integration in education.</p>
+                        
+                        <div class="social-links mt-4" data-aos="fade-left" data-aos-delay="400">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Founder 2 -->
+        <section class="founder-profile bg-body-tertiary">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-7 order-lg-1 order-2">
+                        <h2 class="mb-3" data-aos="fade-right">Professor James Wilson</h2>
+                        <p class="text-muted" data-aos="fade-right" data-aos-delay="100">Co-Founder & Chief Innovation Officer</p>
+                        
+                        <p data-aos="fade-right" data-aos-delay="200">Professor James Wilson is a renowned technologist and education reformer who believes in the power of blending traditional teaching methods with cutting-edge technology. With an MSc in Computer Science from MIT and a background in AI research, James brings a unique perspective to educational methodologies.</p>
+                        
+                        <p data-aos="fade-right" data-aos-delay="300">Before co-founding Goodfluencers, Professor Wilson pioneered several EdTech startups and served as a consultant for major educational institutions worldwide. His innovative approaches to learning have been featured in leading publications including Education Today and Tech & Learning magazine.</p>
+                        
+                        <div class="social-links mt-4" data-aos="fade-right" data-aos-delay="400">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 mb-4 mb-lg-0 order-lg-2 order-1">
+                        <div class="founder-image" data-aos="fade-left">
+                            <img src="founder2.jpg" alt="Professor James Wilson" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Founders' Journey -->
+        <section class="timeline-section">
+            <div class="container">
+                <h2 class="text-center mb-5" data-aos="fade-up">The Goodfluencers Journey</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item row">
+                        <div class="col-md-6 timeline-left">
+                            <div class="timeline-content" data-aos="fade-right">
+                                <h3>2018</h3>
+                                <h4>The Beginning</h4>
+                                <p>Dr. Carter and Professor Wilson first meet at the International Education Technology Conference in San Francisco, where they discover their shared vision for transforming education.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6"></div>
+                        <div class="timeline-dot"></div>
+                    </div>
+                    
+                    <div class="timeline-item row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6 timeline-right">
+                            <div class="timeline-content" data-aos="fade-left">
+                                <h3>2019</h3>
+                                <h4>The Vision Takes Shape</h4>
+                                <p>After months of research and planning, they develop the core methodology that would become the foundation of Goodfluencers' teaching approach.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-dot"></div>
+                    </div>
+                    
+                    <div class="timeline-item row">
+                        <div class="col-md-6 timeline-left">
+                            <div class="timeline-content" data-aos="fade-right">
+                                <h3>2020</h3>
+                                <h4>Goodfluencers is Born</h4>
+                                <p>Goodfluencers officially launches with its first batch of students and a small team of carefully selected educators committed to excellence.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6"></div>
+                        <div class="timeline-dot"></div>
+                    </div>
+                    
+                    <div class="timeline-item row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6 timeline-right">
+                            <div class="timeline-content" data-aos="fade-left">
+                                <h3>2021</h3>
+                                <h4>Rapid Growth</h4>
+                                <p>Following remarkable success rates and growing demand, Goodfluencers expands its course offerings and opens two additional branches.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-dot"></div>
+                    </div>
+                    
+                    <div class="timeline-item row">
+                        <div class="col-md-6 timeline-left">
+                            <div class="timeline-content" data-aos="fade-right">
+                                <h3>2023</h3>
+                                <h4>Innovation & Recognition</h4>
+                                <p>Goodfluencers receives the prestigious Education Innovation Award and launches its proprietary learning platform combining AI and personalized coaching.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6"></div>
+                        <div class="timeline-dot"></div>
+                    </div>
+                    
+                    <div class="timeline-item row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6 timeline-right">
+                            <div class="timeline-content" data-aos="fade-left">
+                                <h3>2025</h3>
+                                <h4>The Future</h4>
+                                <p>With a growing community of successful alumni and continued innovation, Goodfluencers is poised to revolutionize education on a global scale.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Quote Section -->
+        <section class="quote-section">
+            <div class="container">
+                <p class="quote-text" data-aos="fade-up">"Education is not just about imparting knowledge; it's about igniting curiosity and fostering a lifelong love for learning."</p>
+                <p class="mt-4" data-aos="fade-up" data-aos-delay="200">— Dr. Emily Carter & Professor James Wilson</p>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container text-center">
+                <h2 class="mb-4" data-aos="fade-up">Join Our Educational Community</h2>
+                <p class="lead mb-4" data-aos="fade-up" data-aos-delay="200">Experience the unique teaching methodology developed by our founders.</p>
+                <div data-aos="fade-up" data-aos-delay="400">
+                    <a href="courses.html" class="btn btn-primary btn-lg me-3 hero-btn">
+                        <i class="fas fa-book-open me-2"></i>Explore Courses
+                    </a>
+                    <a href="contact.html" class="btn btn-outline-light btn-lg hero-btn">
+                        <i class="fas fa-calendar-alt me-2"></i>Schedule a Meeting
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Goodfluencers</h5>
+                    <p>Shaping minds, building futures.</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i>123 Education Street<br>Knowledge City, KN 12345</p>
+                </div>
+                
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html"><i class="fas fa-chevron-right me-2"></i>Home</a></li>
+                        <li><a href="founders.html"><i class="fas fa-chevron-right me-2"></i>Founders</a></li>
+                        <li><a href="events.html"><i class="fas fa-chevron-right me-2"></i>Events</a></li>
+                        <li><a href="courses.html"><i class="fas fa-chevron-right me-2"></i>Courses</a></li>
+                        <li><a href="contact.html"><i class="fas fa-chevron-right me-2"></i>Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-4">
+                    <h5>Connect With Us</h5>
+                    <div class="d-flex">
+                        <a href="#" class="me-3 fs-4"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="me-3 fs-4"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-3 fs-4"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="fs-4"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                    <p class="mt-3">Subscribe to our newsletter:</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Your email">
+                        <button class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Goodfluencers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+        });
+        
+        // Preloader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.preloader').classList.add('fade-out');
+            }, 500);
+        });
+        
+        // Theme Toggle with new checkbox
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkbox = document.querySelector("#checkbox");
+            
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-bs-theme', 'dark');
+                checkbox.checked = true;
+            }
+            
+            // Add event listener for theme toggle
+            checkbox.addEventListener("click", () => {
+                const html = document.documentElement;
+                const currentTheme = html.getAttribute('data-bs-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-bs-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        });
+        
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => observer.observe(el));
+        });
+        
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Cursor Follower
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.querySelector('.cursor-follower');
+            cursor.style.display = 'block';
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollProgress = (scrollTop / scrollHeight) * 100;
+            document.querySelector('.scroll-progress').style.width = scrollProgress + '%';
+            
+            // Show/Hide Scroll To Top Button
+            if (scrollTop > 300) {
+                document.querySelector('.scroll-to-top').classList.add('visible');
+            } else {
+                document.querySelector('.scroll-to-top').classList.remove('visible');
+            }
+        });
+        
+        // Scroll To Top
+        document.querySelector('.scroll-to-top').addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Page Transition
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('a');
+            
+            links.forEach(link => {
+                if (!link.hasAttribute('target') && link.getAttribute('href') && !link.getAttribute('href').startsWith('#')) {
+                    link.addEventListener('click', (e) => {
+                        const href = link.getAttribute('href');
+                        
+                        if (href) {
+                            e.preventDefault();
+                            const transition = document.querySelector('.page-transition');
+                            transition.classList.add('active');
+                            
+                            setTimeout(() => {
+                                window.location.href = href;
+                            }, 500);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

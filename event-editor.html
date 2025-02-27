@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events JSON Editor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Date picker library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .editor-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 25px;
+        }
+        .btn-primary {
+            background-color: #B39EB5;
+            border-color: #B39EB5;
+        }
+        .btn-primary:hover {
+            background-color: #9e89a4;
+            border-color: #9e89a4;
+        }
+        .event-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .event-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        .divider {
+            height: 1px;
+            background-color: #dee2e6;
+            margin: 30px 0;
+        }
+        .alert {
+            display: none;
+            margin-top: 20px;
+        }
+        .time-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .time-selector select {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="editor-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-calendar-alt me-2"></i> Events Editor</h1>
+            <div>
+                <button id="add-event-btn" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Add New Event</button>
+                <button id="save-all-btn" class="btn btn-success ms-2"><i class="fas fa-save me-2"></i>Save All Events</button>
+            </div>
+        </div>
+
+        <div class="alert alert-success" id="success-alert">
+            <i class="fas fa-check-circle me-2"></i> <span id="success-message"></span>
+        </div>
+        
+        <div class="alert alert-danger" id="error-alert">
+            <i class="fas fa-exclamation-circle me-2"></i> <span id="error-message"></span>
+        </div>
+
+        <div id="events-container">
+            <!-- Events will be added here -->
+        </div>
+
+        <!-- Add Event Form (Hidden initially) -->
+        <div id="event-form-container" style="display: none;">
+            <div class="divider"></div>
+            <h3 id="form-title">Add New Event</h3>
+            <form id="event-form" class="row g-3">
+                <input type="hidden" id="event-id">
+                <div class="col-md-8">
+                    <label for="title" class="form-label">Event Title*</label>
+                    <input type="text" class="form-control" id="title" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="event-date" class="form-label">Date*</label>
+                    <input type="text" class="form-control" id="event-date" placeholder="Click to select date" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="category" class="form-label">Category*</label>
+                    <select class="form-select" id="category" required>
+                        <option value="workshop">Workshop</option>
+                        <option value="seminar">Seminar</option>
+                        <option value="webinar">Webinar</option>
+                        <option value="conference">Conference</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="status" class="form-label">Status*</label>
+                    <select class="form-select" id="status" required>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="past">Past</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Start Time*</label>
+                    <div class="time-selector">
+                        <select class="form-select" id="start-hour">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <span>:</span>
+                        <select class="form-select" id="start-minute">
+                            <option value="00">00</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                        </select>
+                        <select class="form-select" id="start-ampm">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">End Time*</label>
+                    <div class="time-selector">
+                        <select class="form-select" id="end-hour">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <span>:</span>
+                        <select class="form-select" id="end-minute">
+                            <option value="00">00</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                        </select>
+                        <select class="form-select" id="end-ampm">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="location" class="form-label">Location*</label>
+                    <input type="text" class="form-control" id="location" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="image" class="form-label">Image Filename*</label>
+                    <input type="text" class="form-control" id="image" placeholder="event1.jpg" required>
+                    <small class="text-muted">Filename of an image in your website folder</small>
+                </div>
+                <div class="col-md-8">
+                    <label for="registerLink" class="form-label">Register Link</label>
+                    <input type="text" class="form-control" id="registerLink" placeholder="#" value="#">
+                    <small class="text-muted">Use # if you don't have a registration link yet</small>
+                </div>
+                <div class="col-12">
+                    <label for="description" class="form-label">Description*</label>
+                    <textarea class="form-control" id="description" rows="3" required></textarea>
+                </div>
+                <div class="col-12 mt-4">
+                    <button type="submit" class="btn btn-primary" id="submit-btn">Save Event</button>
+                    <button type="button" class="btn btn-secondary ms-2" id="cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="mt-5">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Help: Using the Events Editor</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Adding Events</h6>
+                    <p>Click "Add New Event" and fill out the form. All fields marked with * are required.</p>
+                    
+                    <h6>Images</h6>
+                    <p>Enter the filename of an image that exists in your website's images folder. Make sure to upload the actual image files to your website separately.</p>
+                    
+                    <h6>Saving Changes</h6>
+                    <p>After adding or editing events, click "Save All Events" to download the events.json file. You must upload this file to your website for the changes to appear.</p>
+                    
+                    <h6>Important Notes</h6>
+                    <ul>
+                        <li>Always upload both the events.json file and any new image files to your website</li>
+                        <li>Your changes are stored in your browser until you clear your data</li>
+                        <li>Make regular backups of your events.json file</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize date picker
+            flatpickr("#event-date", {
+                dateFormat: "F j, Y", // Format: Month day, year (e.g., March 15, 2025)
+                allowInput: true
+            });
+            
+            // Elements
+            const eventsContainer = document.getElementById('events-container');
+            const eventFormContainer = document.getElementById('event-form-container');
+            const eventForm = document.getElementById('event-form');
+            const addEventBtn = document.getElementById('add-event-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const saveAllBtn = document.getElementById('save-all-btn');
+            const successAlert = document.getElementById('success-alert');
+            const errorAlert = document.getElementById('error-alert');
+            const formTitle = document.getElementById('form-title');
+            const submitBtn = document.getElementById('submit-btn');
+
+            // Event data
+            let events = [];
+            let currentEventId = null;
+            let isEditing = false;
+
+            // Helper functions
+            function showAlert(type, message) {
+                const alert = type === 'success' ? successAlert : errorAlert;
+                const messageEl = type === 'success' ? document.getElementById('success-message') : document.getElementById('error-message');
+                
+                messageEl.textContent = message;
+                alert.style.display = 'block';
+                
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 5000);
+            }
+            
+            function formatTime(hour, minute, ampm) {
+                return `${hour}:${minute} ${ampm}`;
+            }
+            
+            function parseTime(timeString) {
+                // Parse time from format "1:00 PM - 3:00 PM"
+                if (!timeString) return { startHour: "1", startMinute: "00", startAmPm: "PM", endHour: "3", endMinute: "00", endAmPm: "PM" };
+                
+                const parts = timeString.split('-').map(part => part.trim());
+                if (parts.length !== 2) return { startHour: "1", startMinute: "00", startAmPm: "PM", endHour: "3", endMinute: "00", endAmPm: "PM" };
+                
+                const startTimeParts = parts[0].match(/(\d+):(\d+)\s*(AM|PM)/i);
+                const endTimeParts = parts[1].match(/(\d+):(\d+)\s*(AM|PM)/i);
+                
+                if (!startTimeParts || !endTimeParts) return { startHour: "1", startMinute: "00", startAmPm: "PM", endHour: "3", endMinute: "00", endAmPm: "PM" };
+                
+                return {
+                    startHour: startTimeParts[1],
+                    startMinute: startTimeParts[2],
+                    startAmPm: startTimeParts[3].toUpperCase(),
+                    endHour: endTimeParts[1],
+                    endMinute: endTimeParts[2],
+                    endAmPm: endTimeParts[3].toUpperCase()
+                };
+            }
+
+            function loadEvents() {
+                // Try to load from localStorage first
+                const storedEvents = localStorage.getItem('events');
+                
+                if (storedEvents) {
+                    try {
+                        events = JSON.parse(storedEvents);
+                        renderEvents();
+                    } catch (e) {
+                        showAlert('error', 'Error loading events from storage. Starting with empty list.');
+                        events = [];
+                    }
+                    return;
+                }
+                
+                // If not in localStorage, try to fetch from events.json
+                fetch('events.json')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Could not load events.json');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        events = data;
+                        renderEvents();
+                    })
+                    .catch(error => {
+                        console.error('Error loading events:', error);
+                        showAlert('error', 'Could not load events from file. Starting with empty list.');
+                        events = [];
+                    });
+            }
+
+            function renderEvents() {
+                eventsContainer.innerHTML = '';
+                
+                if (events.length === 0) {
+                    eventsContainer.innerHTML = '<div class="alert alert-info">No events available. Click "Add New Event" to create your first event.</div>';
+                    return;
+                }
+                
+                // Sort events: upcoming first, then past
+                const sortedEvents = [...events].sort((a, b) => {
+                    if (a.status === 'upcoming' && b.status === 'past') return -1;
+                    if (a.status === 'past' && b.status === 'upcoming') return 1;
+                    return 0;
+                });
+                
+                sortedEvents.forEach((event, index) => {
+                    const eventCard = document.createElement('div');
+                    eventCard.className = 'event-card';
+                    eventCard.dataset.id = event.id || index;
+                    
+                    eventCard.innerHTML = `
+                        <div class="event-actions">
+                            <button class="btn btn-sm btn-outline-primary edit-btn" data-id="${event.id || index}">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${event.id || index}">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                        <h4>${event.title}</h4>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <p><strong>Date:</strong> ${event.date}</p>
+                                <p><strong>Category:</strong> ${capitalizeFirstLetter(event.category)}</p>
+                                <p><strong>Location:</strong> ${event.location}</p>
+                                <p><strong>Time:</strong> ${event.time}</p>
+                                <p><strong>Status:</strong> <span class="badge ${event.status === 'upcoming' ? 'bg-success' : 'bg-secondary'}">${capitalizeFirstLetter(event.status)}</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Description:</strong> ${event.description.substring(0, 150)}${event.description.length > 150 ? '...' : ''}</p>
+                                <p><strong>Image:</strong> ${event.image}</p>
+                                <p><strong>Register Link:</strong> ${event.registerLink}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    eventsContainer.appendChild(eventCard);
+                    
+                    // Add event listeners
+                    eventCard.querySelector('.edit-btn').addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        editEvent(id);
+                    });
+                    
+                    eventCard.querySelector('.delete-btn').addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        deleteEvent(id);
+                    });
+                });
+            }
+
+            function saveEvents() {
+                try {
+                    // Save to localStorage
+                    localStorage.setItem('events', JSON.stringify(events));
+                    
+                    // Generate downloadable file
+                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(events, null, 2));
+                    const downloadAnchorNode = document.createElement('a');
+                    downloadAnchorNode.setAttribute("href", dataStr);
+                    downloadAnchorNode.setAttribute("download", "events.json");
+                    document.body.appendChild(downloadAnchorNode);
+                    downloadAnchorNode.click();
+                    downloadAnchorNode.remove();
+                    
+                    showAlert('success', 'Events saved successfully! Upload the events.json file to your website.');
+                } catch (e) {
+                    showAlert('error', 'Error saving events: ' + e.message);
+                }
+            }
+
+            function showEventForm(editing = false) {
+                eventFormContainer.style.display = 'block';
+                formTitle.textContent = editing ? 'Edit Event' : 'Add New Event';
+                submitBtn.textContent = editing ? 'Update Event' : 'Save Event';
+                eventFormContainer.scrollIntoView({ behavior: 'smooth' });
+                isEditing = editing;
+            }
+
+            function hideEventForm() {
+                eventFormContainer.style.display = 'none';
+                eventForm.reset();
+                currentEventId = null;
+                isEditing = false;
+            }
+
+            function editEvent(id) {
+                currentEventId = id;
+                const event = events.find((e, index) => (e.id || index) == id);
+                
+                if (!event) {
+                    showAlert('error', 'Event not found');
+                    return;
+                }
+                
+                // Parse time values
+                const timeValues = parseTime(event.time);
+                
+                // Populate form
+                document.getElementById('event-id').value = id;
+                document.getElementById('title').value = event.title || '';
+                document.getElementById('event-date').value = event.date || '';
+                document.getElementById('category').value = event.category || 'workshop';
+                document.getElementById('image').value = event.image || '';
+                document.getElementById('description').value = event.description || '';
+                document.getElementById('location').value = event.location || '';
+                document.getElementById('status').value = event.status || 'upcoming';
+                document.getElementById('registerLink').value = event.registerLink || '#';
+                
+                // Set time values
+                document.getElementById('start-hour').value = timeValues.startHour;
+                document.getElementById('start-minute').value = timeValues.startMinute;
+                document.getElementById('start-ampm').value = timeValues.startAmPm;
+                document.getElementById('end-hour').value = timeValues.endHour;
+                document.getElementById('end-minute').value = timeValues.endMinute;
+                document.getElementById('end-ampm').value = timeValues.endAmPm;
+                
+                showEventForm(true);
+            }
+
+            function deleteEvent(id) {
+                if (confirm('Are you sure you want to delete this event?')) {
+                    events = events.filter((e, index) => (e.id || index) != id);
+                    localStorage.setItem('events', JSON.stringify(events));
+                    renderEvents();
+                    showAlert('success', 'Event deleted successfully');
+                }
+            }
+
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            // Event Listeners
+            addEventBtn.addEventListener('click', function() {
+                showEventForm(false);
+            });
+
+            cancelBtn.addEventListener('click', function() {
+                hideEventForm();
+            });
+
+            saveAllBtn.addEventListener('click', function() {
+                saveEvents();
+            });
+
+            eventForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Combine time values
+                const startTime = formatTime(
+                    document.getElementById('start-hour').value,
+                    document.getElementById('start-minute').value,
+                    document.getElementById('start-ampm').value
+                );
+                
+                const endTime = formatTime(
+                    document.getElementById('end-hour').value,
+                    document.getElementById('end-minute').value,
+                    document.getElementById('end-ampm').value
+                );
+                
+                const timeString = `${startTime} - ${endTime}`;
+                
+                const eventData = {
+                    title: document.getElementById('title').value,
+                    date: document.getElementById('event-date').value,
+                    category: document.getElementById('category').value,
+                    image: document.getElementById('image').value,
+                    description: document.getElementById('description').value,
+                    location: document.getElementById('location').value,
+                    time: timeString,
+                    status: document.getElementById('status').value,
+                    registerLink: document.getElementById('registerLink').value || '#'
+                };
+                
+                // Add ID if not present
+                if (!eventData.id) {
+                    eventData.id = Date.now().toString();
+                }
+                
+                if (isEditing && currentEventId !== null) {
+                    // Update existing event
+                    events = events.map((e, index) => {
+                        if ((e.id || index) == currentEventId) {
+                            return { ...e, ...eventData };
+                        }
+                        return e;
+                    });
+                    showAlert('success', 'Event updated successfully');
+                } else {
+                    // Add new event
+                    events.push(eventData);
+                    showAlert('success', 'Event added successfully');
+                }
+                
+                localStorage.setItem('events', JSON.stringify(events));
+                renderEvents();
+                hideEventForm();
+            });
+
+            // Initialize
+            loadEvents();
+        });
+    </script>
+</body>
+</html>
